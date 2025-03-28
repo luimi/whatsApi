@@ -8,7 +8,7 @@ require('dotenv').config()
 const app = express()
 const server = http.createServer(app);
 const wsServer = new WebSocket.Server({ server });
-const { PORT } = process.env;
+const { PORT, PASSWORD } = process.env;
 
 server.listen(PORT || 3000, () => {
     console.log(`Servidor escuchando en el puerto ${PORT || 3000}`);
@@ -29,6 +29,8 @@ const sendStatusUpdate = () => {
         if (client.readyState === WebSocket.OPEN) client.send(JSON.stringify(status));
     });
 }
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 /*
@@ -74,7 +76,13 @@ app.post('/disconnectAccount', (req, res) => {
     res.send('Disconnected')
 })
 
-
+app.post('/isPassword', (req, res) => {
+    if (req.body.password === PASSWORD) {
+        res.send({success: true})
+    } else {
+        res.status(401).send('Unauthorized')
+    }
+})
 
 /*
 
