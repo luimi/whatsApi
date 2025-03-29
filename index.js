@@ -88,6 +88,25 @@ app.get('/getStatus', (req, res) => {
     res.send(status)
 })
 
+app.post('/sendMessage', (req, res) => {
+    const { number, message } = req.body;
+    if (!number || !message) {
+        return res.status(400).send('Number and message are required');
+    }
+    const chatId = number + '@c.us';
+    wwClient.sendMessage(chatId, message)
+        .then(response => {
+            if (response.id.fromMe) {
+                res.send('Mensaje enviado');
+            } else {
+                res.status(500).send('Fallo al enviar el mensaje');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).send('Fallo al enviar el mensaje');
+        });
+})
 /*
 
  __          ___           _                            
