@@ -84,6 +84,10 @@ app.post('/isPassword', (req, res) => {
     }
 })
 
+app.get('/getStatus', (req, res) => {
+    res.send(status)
+})
+
 /*
 
  __          ___           _                            
