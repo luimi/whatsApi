@@ -77,7 +77,7 @@ app.post('/disconnectAccount', (req, res) => {
 })
 
 app.post('/isPassword', (req, res) => {
-    if (req.body.password === PASSWORD) {
+    if (req.body.password === PASSWORD || !PASSWORD) {
         res.send({success: true})
     } else {
         res.status(401).send('Unauthorized')
