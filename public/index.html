@@ -165,7 +165,8 @@
                 setTryCounts((prev) => {
                     const newCount = prev + 1;
                     setTimeout(() => {
-                        newCount % 10 < 5 ? tryWebsocket() : tryApi();
+                        console.log(newCount % 2 === 0 ? 'Trying WebSocket' : 'Trying API');
+                        newCount % 2 === 0 ? tryWebsocket() : tryApi();
                     }, 5000);
                     return newCount;
                 });
