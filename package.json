@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "docker": "docker build -t whatsapi . && docker run -p 3000:3000 -it whatsapi"
   },
   "author": "",
   "license": "ISC",
