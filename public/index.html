@@ -102,8 +102,9 @@
                     headers: {
                         'Content-Type': 'application/json'
                     }
-                }).then(response => response.json()).then(data => {
+                }).then(response => response.text()).then(data => {
                     console.log(data);
+                    alert(data)
                 });
             }
             return (

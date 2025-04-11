@@ -42,31 +42,31 @@ app.get('/', (req, res) => {
 
 app.post('/startService', (req, res) => {
     ww.start();
-    res.send('Service Started')
+    res.send('Servicio iniciado')
     sendStatusUpdate();
 })
 
 app.post('/stopService', (req, res) => {
     ww.stop();
-    res.send('Service Stopped')
+    res.send('Servicio detenido')
     sendStatusUpdate();
 })
 
 app.post('/restartService', (req, res) => {
     ww.restart();
-    res.send('Service Restarted')
+    res.send('Servicio reiniciado')
 })
 
 app.post('/disconnectAccount', (req, res) => {
     ww.disconnect();
-    res.send('Disconnected')
+    res.send('Servicio desconectado')
 })
 
 app.post('/isPassword', (req, res) => {
     if (req.body.password === PASSWORD || !PASSWORD) {
         res.send({ success: true })
     } else {
-        res.status(401).send('Unauthorized')
+        res.status(401).send('Contraseña incorrecta')
     }
 })
 
@@ -77,13 +77,13 @@ app.get('/getStatus', (req, res) => {
 app.post('/sendMessage', async (req, res) => {
     const { number, message } = req.body;
     if (!number || !message) {
-        return res.status(400).send('Number and message are required');
+        return res.status(400).send('Número o mensaje no proporcionado');
     }
     let result = await ww.sendMessage(number, message);
     if (result) {
         res.send('Mensaje enviado');
     } else {
-        res.status(500).send('Fallo al enviar el mensaje');
+        res.status(500).send('Falló al enviar el mensaje');
     }
 })
 
