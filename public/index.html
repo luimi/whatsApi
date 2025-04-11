@@ -108,7 +108,7 @@
             }
             return (
                 <fieldset>
-                    <legend>Acciones</legend>
+                    <legend>Servicio</legend>
                     <div className="btn-group" role="group" aria-label="Basic example" style={{ width: '100%' }}>
                         <button type="button" className="btn btn-success" disabled={service === "Running"} onClick={() => request('startService')}>Iniciar</button>
                         <button type="button" className="btn btn-success" disabled={service === "Paused"} onClick={() => request('stopService')}>Detener</button>
