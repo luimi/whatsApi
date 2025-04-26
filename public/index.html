@@ -32,6 +32,7 @@
                     body: JSON.stringify({ password })
                 }).then(response => response.json()).then(data => {
                     if (data.success) {
+                        localStorage.setItem('token', data.token);
                         setIsLoggedIn(true);
                     }
                 }).catch(error => {
@@ -65,10 +66,16 @@
                 </div>
             )
         }
-        const Content = ({ status }) => {
+        const Content = ({ status, setIsLoggedIn }) => {
             return (
                 <div className="container">
                     <div className="row">
+                        <div className="col-12 d-flex align-items-end flex-column">
+                            <button type="button" class="btn btn-light" onClick={()=> {
+                                setIsLoggedIn(false)
+                                localStorage.removeItem('token');
+                            }}>🚪 Cerrar sesión</button>
+                        </div>
                         <div className="col-12 col-lg-6 py-3">
                             <Actions service={status.service} status={status.status} />
                         </div>
@@ -100,7 +107,8 @@
                 fetch(`${host}/${type}`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'token': localStorage.getItem('token')
                     }
                 }).then(response => response.text()).then(data => {
                     console.log(data);
@@ -128,7 +136,8 @@
                 fetch(`${host}/sendMessage`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'token': localStorage.getItem('token')
                     },
                     body: JSON.stringify({ number, message })
                 }).then(response => response.text()).then(data => {
@@ -162,7 +171,7 @@
         }
         const App = (props) => {
             const [status, setStatus] = React.useState();
-            const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+            const [isLoggedIn, setIsLoggedIn] = React.useState(localStorage.getItem('token') ? true : false);
             const [tryCounts, setTryCounts] = React.useState(0);
 
             React.useEffect(() => {
@@ -185,7 +194,7 @@
                     ws.onerror = (error) => {
                         console.log('Error en la conexión WebSocket:', error);
                     };
-                } catch (e) { 
+                } catch (e) {
                     tryStrategy(tryCounts);
                 }
             }
@@ -225,7 +234,7 @@
                             </div>
                         </div>
                     </nav>
-                    {status ? (isLoggedIn ? <Content status={status} /> : <Lock setIsLoggedIn={setIsLoggedIn} />) : <EmptyState />}
+                    {status ? (isLoggedIn ? <Content status={status} setIsLoggedIn={setIsLoggedIn}/> : <Lock setIsLoggedIn={setIsLoggedIn} />) : <EmptyState />}
 
                 </div>
             );
