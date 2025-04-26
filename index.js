@@ -40,6 +40,18 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 })
 
+app.post('/isPassword', (req, res) => {
+    if (req.body.password === PASSWORD || !PASSWORD) {
+        res.send({ success: true })
+    } else {
+        res.status(401).send('Contraseña incorrecta')
+    }
+})
+
+app.get('/getStatus', (req, res) => {
+    res.send(ww.status())
+})
+
 app.post('/startService', (req, res) => {
     ww.start();
     res.send('Servicio iniciado')
@@ -60,18 +72,6 @@ app.post('/restartService', (req, res) => {
 app.post('/disconnectAccount', (req, res) => {
     ww.disconnect();
     res.send('Servicio desconectado')
-})
-
-app.post('/isPassword', (req, res) => {
-    if (req.body.password === PASSWORD || !PASSWORD) {
-        res.send({ success: true })
-    } else {
-        res.status(401).send('Contraseña incorrecta')
-    }
-})
-
-app.get('/getStatus', (req, res) => {
-    res.send(ww.status())
 })
 
 app.post('/sendMessage', async (req, res) => {
